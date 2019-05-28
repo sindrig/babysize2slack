@@ -30,4 +30,7 @@ delete-stack:
 	aws cloudformation delete-stack --stack-name ${STACK_NAME} ${REGPROF}
 
 get-lambda:
-	aws cloudformation describe-stacks ${REGPROF} --stack-name ${STACK_NAME} --query 'Stacks[0].Outputs[0].OutputValue'
+	make extra="--query 'Stacks[0].Outputs[0].OutputValue'" describe-stack 
+
+describe-stack:
+	aws cloudformation describe-stacks ${REGPROF} --stack-name ${STACK_NAME} $(extra)

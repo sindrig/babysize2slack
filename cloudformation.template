@@ -39,7 +39,7 @@
             "Properties": {
                 "Description": "Schedules running of lambda data fetcher",
                 "Name": "BabyCron",
-                "ScheduleExpression": "cron(0 10 ? * 3 *)",
+                "ScheduleExpression": "cron(0 10 ? * 2 *)",
                 "Targets": [
                     {
                         "Id": "CronScheduler",
