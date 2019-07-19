@@ -5,7 +5,7 @@ import json
 import os
 from html.parser import HTMLParser
 
-START = datetime.date(2019, 4, 6)
+START = datetime.date(2019, 4, 3)
 SLACK_API_TOKEN = os.getenv('SLACK_TOKEN')
 SLACK_POST_URL = 'https://slack.com/api/chat.postMessage'
 
