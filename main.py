@@ -63,7 +63,7 @@ def get_info(url):
 
 def send_to_slack(*lines):
     entry = {
-        'text': '\\n'.join(lines),
+        'text': '\n'.join(lines),
         # 'channel': 'test',
         'channel': 'general',
     }
