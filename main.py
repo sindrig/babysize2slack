@@ -5,7 +5,13 @@ import json
 import os
 from html.parser import HTMLParser
 
+epoch = datetime.datetime.utcfromtimestamp(0)
 START = datetime.date(2019, 4, 3)
+START_TIMESTAMP = int(
+    (
+        datetime.datetime.combine(START, datetime.time.max) - epoch
+    ).total_seconds() * 1000 + 1
+)
 SLACK_API_TOKEN = os.getenv('SLACK_TOKEN')
 SLACK_POST_URL = 'https://slack.com/api/chat.postMessage'
 
@@ -36,12 +42,14 @@ def get_urls():
     weeks = int((datetime.date.today() - START).days / 7)
     return Urls(
         (
-            'http://www.ljosmodir.is/medgongudagatal?cl=30&cd=1554508800000&'
+            'http://www.ljosmodir.is/medgongudagatal?cl=29&'
+            f'cd={START_TIMESTAMP}&'
             f'sw={weeks}&sd=0&tw=false'
         ),
         (
             'http://www.ljosmodir.is/Calendar.ashx?action=retrieveWeek&'
-            f'weekNo={weeks}&twins=false'
+            # lol
+            f'weekNo={weeks + 1}&twins=false'
         )
     )
 
@@ -50,7 +58,6 @@ def get_info(url):
     req = urllib.request.Request(url)
     response = urllib.request.urlopen(req)
     data = json.loads(response.read().decode('utf8'))
-    print(data)
     return strip_tags(data['FullEntry'])
 
 
@@ -76,7 +83,12 @@ def send_to_slack(*lines):
 def handler(event, context):
     urls = get_urls()
     info = get_info(urls.json)
-    send_to_slack(urls.human, info)
+    if SLACK_API_TOKEN:
+        send_to_slack(urls.human, info)
+    else:
+        print('Not sending anything to slack, missing SLACK_API_TOKEN')
+        print(urls.human)
+        print(info)
 
 
 if __name__ == '__main__':
