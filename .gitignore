@@ -59,3 +59,8 @@ tmp/
 /generated-cloudformation.template
 
 /ENV.local
+/.terraform
+
+/terraform.tfstate
+
+/terraform.tfstate.backup
